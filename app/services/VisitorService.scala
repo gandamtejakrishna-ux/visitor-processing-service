@@ -78,8 +78,8 @@ class VisitorService @Inject()(
               None,
               "CHECKED_IN",
               None,
-              host.name,
-              host.email
+              Some(host.name),
+              Some(host.email)
             )
           )
           _ <- idProofRepo.insert(IdProof(None, visitId, idProofHash))

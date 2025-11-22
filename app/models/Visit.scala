@@ -11,7 +11,8 @@ case class Visit(
                   checkoutTime: Option[LocalDate],
                   status: String,
                   createdBy: Option[Long],
-                  hostName: String,
-                  hostEmail: String
+                  hostName: Option[String],
+                  hostEmail: Option[String]
                 )
+
 

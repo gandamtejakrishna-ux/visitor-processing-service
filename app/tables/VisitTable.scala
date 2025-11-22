@@ -1,8 +1,8 @@
 package tables
-
 import models.Visit
 import slick.jdbc.MySQLProfile.api._
-import java.time.LocalDate
+
+import java.time.{LocalDate, LocalDateTime}
 
 class VisitTable(tag: Tag) extends Table[Visit](tag, "visits") {
 
@@ -13,7 +13,6 @@ class VisitTable(tag: Tag) extends Table[Visit](tag, "visits") {
       s => s.toLocalDate
     )
 
-
   def id             = column[Long]("id", O.PrimaryKey, O.AutoInc)
   def visitorId      = column[Long]("visitor_id")
   def hostEmployeeId = column[Long]("host_employee_id")
@@ -22,13 +21,16 @@ class VisitTable(tag: Tag) extends Table[Visit](tag, "visits") {
   def checkoutTime   = column[Option[LocalDate]]("checkout_time")
   def status         = column[String]("status")
   def createdBy      = column[Option[Long]]("created_by")
-  def hostName  = column[String]("host_name")
-  def hostEmail = column[String]("host_email")
+  def hostName       = column[Option[String]]("host_name")
+  def hostEmail      = column[Option[String]]("host_email")
 
   def visitorFK =
     foreignKey("fk_visits_visitor", visitorId, TableQuery[VisitorTable])(_.id)
 
   def * =
-    (id.?, visitorId, hostEmployeeId, purpose, checkinTime, checkoutTime, status, createdBy,hostName,hostEmail)
-      .<>(Visit.tupled, Visit.unapply)
+    (
+      id.?, visitorId, hostEmployeeId, purpose,
+      checkinTime, checkoutTime, status, createdBy,
+      hostName, hostEmail
+    ).<>(Visit.tupled, Visit.unapply)
 }
